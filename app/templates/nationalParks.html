@@ -1,5 +1,23 @@
-<html>
-  <body>
-    <h1>National Parks</h1>
-  </body>
-</html>
+{% block content %}
+
+<h1>National Parks</h1>
+
+
+
+{% for park in park_list %}
+
+<h2>{{ park.park_name }}</h2>
+    <ul>
+        <li>State: {{ park.park_state }}</li>
+        <li>Coordinates: {{ park.park_coordinates }}</li>
+        <li>Description: {{ park.park_description }}</li>
+    </ul>
+
+
+{% endfor %}
+
+
+
+
+
+{% endblock %}

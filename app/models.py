@@ -118,8 +118,8 @@ class DjangoSession(models.Model):
 
 class Camper(models.Model):
     camper_id = models.IntegerField(primary_key=True)
-    camper_password = models.CharField(max_length=-1, blank=True, null=True)
-    camper_email = models.CharField(max_length=-1, blank=True, null=True)
+    camper_password = models.CharField(max_length=100, blank=True, null=True)
+    camper_email = models.CharField(max_length=100, blank=True, null=True)
     camper_registrationdate = models.DateField(blank=True, null=True)
 
     class Meta:
@@ -131,9 +131,10 @@ class Event(models.Model):
     event_id = models.IntegerField(primary_key=True)
     park = models.ForeignKey(
         'Park', on_delete=models.CASCADE, blank=True, null=True)
-    event_name = models.CharField(max_length=-1, blank=True, null=True)
+    event_name = models.CharField(max_length=100, blank=True, null=True)
     event_date = models.DateField(blank=True, null=True)
-    event_description = models.CharField(max_length=-1, blank=True, null=True)
+    event_description = models.CharField(
+        max_length=5000, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -142,10 +143,10 @@ class Event(models.Model):
 
 class Park(models.Model):
     park_id = models.IntegerField(primary_key=True)
-    park_name = models.CharField(max_length=-1, blank=True, null=True)
-    park_state = models.CharField(max_length=-1, blank=True, null=True)
-    park_coordinates = models.CharField(max_length=-1, blank=True, null=True)
-    park_description = models.CharField(max_length=-1, blank=True, null=True)
+    park_name = models.CharField(max_length=100, blank=True, null=True)
+    park_state = models.CharField(max_length=20, blank=True, null=True)
+    park_coordinates = models.CharField(max_length=100, blank=True, null=True)
+    park_description = models.CharField(max_length=5000, blank=True, null=True)
     park_avgrating = models.FloatField(blank=True, null=True)
     park_numreviews = models.IntegerField(blank=True, null=True)
     park_sevendaycost = models.FloatField(blank=True, null=True)
@@ -158,7 +159,7 @@ class Park(models.Model):
 class Reservation(models.Model):
     reservation_id = models.IntegerField(primary_key=True)
     camper = models.ForeignKey(
-        Camper, models.DO_NOTHING, blank=True, null=True)
+        Camper, on_delete=models.CASCADE, blank=True, null=True)
     park = models.ForeignKey(
         Park, on_delete=models.CASCADE, blank=True, null=True)
     reservation_startdate = models.DateField(blank=True, null=True)
@@ -173,7 +174,7 @@ class Reservation(models.Model):
 class Review(models.Model):
     review_id = models.IntegerField(primary_key=True)
     camper = models.ForeignKey(
-        Camper, models.DO_NOTHING, blank=True, null=True)
+        Camper, on_delete=models.CASCADE, blank=True, null=True)
     park = models.ForeignKey(
         Park, on_delete=models.CASCADE, blank=True, null=True)
     review_date = models.DateField(blank=True, null=True)

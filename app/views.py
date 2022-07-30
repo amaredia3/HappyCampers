@@ -1,6 +1,8 @@
+from multiprocessing import Event
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Park
+from .models import Event
 
 
 def login(request):
@@ -16,9 +18,11 @@ def parks(request):
 
 
 def nationalParks(request):
-    park_list = Park.objects.all()
+    park_list = Park.objects.filter(park_name='Yosemite National Park')
+    event_list = Event.objects.filter(park_id='1')
     return render(request, 'nationalParks.html',
-                  {'park_list': park_list})
+                  {'park_list': park_list,
+                   'event_list': event_list})
 
 
 def reservations(request):

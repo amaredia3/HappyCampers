@@ -121,6 +121,7 @@ class Camper(models.Model):
     camper_password = models.CharField(max_length=100, blank=True, null=True)
     camper_email = models.CharField(max_length=100, blank=True, null=True)
     camper_registrationdate = models.DateField(blank=True, null=True)
+    camper_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = True

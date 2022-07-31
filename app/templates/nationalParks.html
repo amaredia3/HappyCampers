@@ -75,11 +75,9 @@
     
     <div class = "container-fluid h-100%" style="background-color: #b6c48e; height: 100%;">
     
-        {% for park in park_list %}
-    
         <div class = "row" style = "margin-bottom: 1.5; padding: 2%;">
             <div class = "col-3" style = "padding: 0%;">
-                <h1>{{ park.park_name }}</h1 >
+                <h1>{{ current_park.park_name }}</h1 >
             </div>
     
             <div class = "col-3" align = "center">
@@ -91,18 +89,17 @@
                     <form action="" method="POST">
                     {% csrf_token %}
                     <div>
-                        <div class="btn form-group" style="padding: 0%;">
-                            <select name = "rating-dropdown" class="custom-select" required>
-                              <option value="">Rate Park</option>
-                              <option value="1">1</option>
-                              <option value="2">2</option>
-                              <option value="3">3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
+                        <input class="btn btn-primary" type="submit" value = "Submit Rating">
+                        <div class="btn form-group" style="padding: 0%;  width: 10%;">
+                            <select name = "rating-dropdown" class="custom-select" style = "width: 100%;">
+                                <option value="5">5</option>
+                                <option value="4">4</option>                            
+                                <option value="3">3</option>    
+                                <option value="2">2</option>                          
+                                <option value="1">1</option>
                             </select>
     
                         </div>
-                        <input class="btn btn-primary" type="submit" value = "Submit Rating">
                     </div>
                     </form>
             </div>
@@ -110,14 +107,14 @@
 
     
             <div class = "col-3" align = "center">
-                Average Rating: {{ park.park_avgrating }} / 5.0
+                Average Rating: {{ current_park.park_avgrating }} / 5.0
             </div>
         </div>
         
     
         <div class= "row">
             <div class  = "col-5" style="padding: 2%;">
-                <h3>Park Description:</h3> <br> <br> {{ park.park_description }} 
+                <h3>Park Description:</h3> <br> <br> {{ current_park.park_description }} 
             </div>
     
             <div class = "col-7" align = "center" style="padding: 2%;">
@@ -160,8 +157,6 @@
                 </table>
             </div>
         </div>
-    
-        {% endfor %}
         
     </div>
 

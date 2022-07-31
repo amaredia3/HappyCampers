@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import check_password
 import datetime
 from django.db.models import Max
 from django.http import HttpResponseRedirect
+import random
 
 
 def login(request):

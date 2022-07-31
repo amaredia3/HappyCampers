@@ -3,6 +3,7 @@ body,
 header,
 #intro {
     height: 100%;
+    background-color: #b6c48e;
 }
 
 
@@ -12,4 +13,9 @@ header,
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    background-color: #b6c48e;
+}
+
+#about_us {
+    background-color: #b6c48e;
 }

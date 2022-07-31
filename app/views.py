@@ -10,6 +10,7 @@ import datetime
 from django.db.models import Max
 from datetime import datetime
 from django.http import HttpResponseRedirect
+import random
 
 
 def login(request):

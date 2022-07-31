@@ -79,8 +79,18 @@ WSGI_APPLICATION = 'HappyCampers.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+        'ENGINE': 'django.db.backends.postgresql',
+
+        'NAME': 'de7fkuk20poveb',
+
+        'USER': 'yvggbejojsolqv',
+
+        'PASSWORD': 'd8fcc877ff2f4b578894a155e0a6e7d13b5f19d52f4c90d0598750076e4099df',
+
+        'HOST': 'ec2-18-214-35-70.compute-1.amazonaws.com',
+
+        'PORT': '5432',
     }
 }
 
@@ -103,7 +113,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+PASSWORD_HASHERS = [
+  'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+  'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+  'django.contrib.auth.hashers.Argon2PasswordHasher',
+  'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+  'django.contrib.auth.hashers.BCryptPasswordHasher',
+  'django.contrib.auth.hashers.SHA1PasswordHasher',
+  'django.contrib.auth.hashers.MD5PasswordHasher',
+  'django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher',
+  'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
+  'django.contrib.auth.hashers.CryptPasswordHasher',
+]
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -119,7 +140,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    Path.joinpath(BASE_DIR, "static"),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

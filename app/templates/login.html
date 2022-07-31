@@ -1,5 +1,52 @@
-<html>
-  <body>
-    <h1>Login</h1>
-  </body>
+{% extends 'base.html' %}
+{% load static %}
+{% block content%}
+    <section class="h-100" style="padding-top:10%;">
+        <div class="container h-100">
+            <div class="row justify-content-sm-center h-100">
+                <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-5" style="background-color:#b6c48e">
+                            <h1 class="fs-4 card-title fw-bold mb-4">Welcome to Happy Campers!</h1>
+                            {% if error_message != '' %}
+                                <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+                            {% endif %}
+                            <form method="POST" class="needs-validation" action="{% url 'login' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label class="mb-2 text-muted" for="email">E-Mail Address</label>
+                                    <input id="email" type="email" class="form-control" name="email" value="" required>
+                                    <div class="invalid-feedback">
+                                        Email is required
+                                    </div>
+                                </div>
+                
+                                <div class="mb-3">
+                                    <label class="mb-2 text-muted" for="password">Password</label>
+                                    <input id="password" type="password" class="form-control" name="password" required>
+                                    <div class="invalid-feedback">
+                                        Password is required
+                                    </div>
+                                </div>
+
+                                <div class="align-items-center d-flex">
+                                    <button type="submit" class="btn btn-primary ms-auto">
+                                        Login   
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer py-3 border-0" style="background-color:#f4d8ae;">
+                            <div class="text-center">
+                                Don't have an account? <a href="signup" class="text-dark">Sign Up</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
 </html>
+
+{% endblock %}

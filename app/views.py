@@ -67,6 +67,7 @@ def reservations(request):
     else:
         national_park = ''
     estimated_cost = ''
+    reservations = ''
     start_date = None
     end_date = None
     if request.method == "POST":
@@ -100,9 +101,12 @@ def reservations(request):
             newReservation.save()
         except:
             error_message = 'Internal Error. Please try again.'
-        
-
-    return render(request, 'reservations.html', { 'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost})
+    try:
+        reservations = Reservation.objects.filter(camper=Camper.objects.filter(camper_id=request.session['user-id'])[0],
+                                                park=national_park)
+    except:
+        error_message = 'Could not get your reservations.'
+    return render(request, 'reservations.html', { 'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost, 'reservations': reservations})
 
 
 def signup(request):

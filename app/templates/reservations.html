@@ -8,7 +8,7 @@
         <div class="row justify-content-sm-center h-100">
         <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
             <div class="card shadow-lg">
-            <div class="card-body p-5">
+            <div class="card-body p-5" style="background-color:#b6c48e">
                 <h1 class="fs-4 card-title fw-bold mb-4" id="national-park">{{ national_park }}</h1>
                 {% if error_message != '' %}
                 <div class="alert alert-danger" role="alert">{{ error_message }}</div>
@@ -44,7 +44,7 @@
                 <div>
                     {% if reservations %}
                         <p> Existing reservations: </p>
-                        <table class="table">
+                        <table class="table" style="background-color:#f4d8ae;">
                             <thead>
                                 <tr>
                                   <th scope="col">Start Date</th>
@@ -67,7 +67,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="card-footer py-3 border-0">
+            <div class="card-footer py-3 border-0" style="background-color:#f4d8ae;">
                 <div class="text-center">
                     View other parks <a href="parks" class="text-dark"> here.</a>
                 </div>

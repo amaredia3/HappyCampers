@@ -1,5 +1,184 @@
-<html>
-  <body>
-    <h1>Parks</h1>
-  </body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!--CDN for Font Awesome-->
+<script src="https://use.fontawesome.com/2bc0e1447f.js"></script>
+
+<style>
+    .fa-color {
+        color: green;
+    }
+
+    .navbar-link {
+        text-decoration: none;
+        color: black;
+    }
+
+    .btn {
+        background-color: #D9D9D9;
+        color: black;
+        border: 2px;
+        border-color: black;
+        border-radius: 7px;
+    }
+
+    /* .btn:hover {
+        background-color: #f4d8ae;
+        color: black;
+    } */
+
+    .custom-select {
+        color: black;
+    }
+
+    
+</style>
+
+<div class = "parks-page" style="height: 100%;"> 
+
+    <div id = "login-navbar" class = "container-fluid" >
+        <div class = "row" style="padding-top: .5%; padding-bottom: .5%; padding-left: 3%; padding-right: 3%; background-color: #f4d8ae;">
+            <div id = "header icon" class = "col-1" style="content: center;">
+                <i class="fa fa-color fa-tree fa-lg"></i>
+            </div>
+            <div class = "col-1">
+                <a class = "navbar-link" href = "home">Home</a>
+            </div>
+            <div class = "col-1">
+                <a class = "navbar-link" href = "parks">Parks</a>
+            </div>
+                
+            <div class = "col-1">
+                <a class = "navbar-link" href = "reservations">Reservation</a>
+                
+            </div>
+            <div class = "col-8">
+                <a class = "navbar-link" href = "signup">Log In/Sign Up</a>
+            </div>
+        </div>
+
+    </div>
+
+    
+    <div class = "footer" style="width: 100%; height: 4.5%; background-color: #D9D9D9; padding: 0%;">
+
+    </div>   
+    
+    <!-- Filters/Search Bars -->
+    <div class = "row" style = "margin-bottom: 1.5; padding: 2%;">
+      <!-- Filter by Park Name or State -->
+      <div class = "col-3" align = "center">
+        <div class="input-group">
+          <div class="form-outline">
+            <input type="text" id="parkName" class="form-control" />
+            <label class="form-label" for="form1">Search by Park or State</label>
+          </div>
+          <button type="button" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtering script -->
+      <script>
+        $(document).ready(function(){
+          $("#parkName").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#parkTable tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+        </script>
+
+      <!-- Filter by Proximity to Location -->
+      <div class = "col-3" align = "center">
+          <div class = "row">
+            <div class = "col-4">
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" role="button" id="miles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  # of miles
+                </a>
+              
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item">50</a>
+                  <a class="dropdown-item">100</a>
+                  <a class="dropdown-item">500</a>
+                  <a class="dropdown-item">1000</a>
+                </div>
+              </div>
+            </div>
+            <div class = "col-4">
+              <div class="input-group">
+                <div class="form-outline">
+                  <input type="text" id="city" class="form-control" />
+                  <label class="form-label" for="form1">Enter City</label>
+                </div>
+                <button type="button" class="btn btn-primary">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    
+    <!-- National Parks List -->
+    <div class = "container-fluid h-100%" style="background-color: #b6c48e; height: 100%;" id="parkTable">   
+      {% for park in park_list %}
+
+      <div class = "row" style = "margin-bottom: 1.5; padding: 2%;">
+          <div class = "col-3" style = "padding: 0%;">
+              <h2>{{ park.park_name }}</h2 >
+          </div>
+          <div class = "col-3" style = "padding: 0%;">
+              <h2>{{ park.park_state }}</h2>
+          </div>
+
+          <script language="javascript" type="text/javascript">
+            var parkhref = park.park_name; 
+          </script>
+          <div class = "col-3" align = "center">
+              <a class="btn btn-primary" href="nationalParks.html" onclick="location.href=this.href+'?park='+parkhref; return false;" role="button">View Park</a>
+          </div>
+            
+          <div class = "col-3" align = "center">
+              Average Rating: {{ park.park_avgrating }} / 5.0
+          </div>
+      </div>
+
+      {% endfor %}
+        
+    </div>
+
+    <!-- National Parks Table -->
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Park Name</th>
+          <th>State</th>
+          <th></th>
+          <th>Rating</th>
+        </tr>
+      </thead>
+      <tbody id="parksTable">
+        {% for park in park_list %}
+        <tr>
+          <td>{{ park.park_name }}</td>
+          <td>{{ park.park_state }}</td>
+          <th></th>
+          <td>{{ park.park_avgrating }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class = "footer" style="width: 100%; height: 100px; background-color: #D9D9D9;">
+
+    </div>
+
+</div>
+
+{% endblock content %}

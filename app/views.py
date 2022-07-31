@@ -1,11 +1,14 @@
 from multiprocessing import Event
 from django.shortcuts import render
 from django.http import HttpResponse
+from scipy import rand
 from .models import Camper, Park, Event, Review, Reservation
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 import datetime
 from django.db.models import Max
+from django.http import HttpResponseRedirect
+
 
 def login(request):
     error_message = ''
@@ -13,14 +16,15 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
         try:
-            user_password_encrypted = Camper.objects.filter(camper_email=email).only('camper_password')[0].camper_password
+            user_password_encrypted = Camper.objects.filter(
+                camper_email=email).only('camper_password')[0].camper_password
         except:
             user_password_encrypted = None
         if user_password_encrypted is None:
             error_message = 'Account for this email does not exist'
         else:
-            if check_password(password,user_password_encrypted):
-                return render(request, 'home.html')
+            if check_password(password, user_password_encrypted):
+                return render(request, 'nationalParks.html')
             else:
                 error_message = "Invalid Password"
     return render(request, 'login.html', {'error_message': error_message})
@@ -36,23 +40,54 @@ def parks(request):
 
 def nationalParks(request):
 
-    park_list = Park.objects.filter(park_name='Yosemite National Park')
-    event_list = Event.objects.filter(park_id='1')
+    #still need to receive user and park object from parks page#######
+
+    park_list = Park.objects.all().order_by("park_id")
+    current_park = park_list[0]
+
+    camper_list = Camper.objects.all().order_by("camper_id")
+    current_camper = camper_list[0]
+
+    ##################################################################
+
+    # Used for testing Different Parks
+    # for park in park_list:
+    #     if park.park_name == 'Yosemite National Park':
+    #         current_park = park
+    #     elif park.park_name == 'Yellowstone National Park':
+    #         current_park = park
+    #     elif park.park_name == 'Glacier National Park':
+    #         current_park = park
+    #     elif park.park_name == 'Grand Canyon National Park':
+    #         current_park = park
+    #     elif park.park_name == 'Zion National Park':
+    #         current_park = park
+    #     elif park.park_name == 'Grand Teton National Park':
+    #         current_park = park
+    #     elif park.park_name == 'Bryce Canyon National Park':
+    #         current_park = park
+    #     elif park.park_name == 'Rocky Moutain National Park':
+    #         current_park = park
+    #     elif park.park_name == 'Arches National Park':
+    #         current_park = park
+    #     elif park.park_name == 'Great Smoky Mountains National Park':
+    #         current_park = park
+
+    event_list = Event.objects.filter(park_id=current_park.park_id)
 
     if request.method == 'POST':
+
         newRating = Review()
         newRating.review_rating = request.POST.get('rating-dropdown')
-        newRating.review_id = 1
+        newRating.review_date = datetime.date.today()
+        newRating.review_id = random.randint(0, 999)
+        newRating.park = current_park
+        newRating.camper = current_camper
         newRating.save()
+        return HttpResponseRedirect("")
 
-        return render(request, 'nationalParks.html',
-                      {'park_list': park_list,
-                       'event_list': event_list})
-
-    else:
-        return render(request, 'nationalParks.html',
-                      {'park_list': park_list,
-                       'event_list': event_list})
+    return render(request, 'nationalParks.html',
+                  {'event_list': event_list, 'current_park': current_park})
 
 
 def reservations(request):
@@ -70,9 +105,10 @@ def signup(request):
         else:
             last_id = Camper.objects.aggregate(Max('camper_id'))
             try:
-                newUser = Camper(camper_id=last_id['camper_id__max']+1,camper_email=email,camper_password=make_password(password),camper_registrationdate=datetime.date.today(),camper_name=name)
+                newUser = Camper(camper_id=last_id['camper_id__max']+1, camper_email=email, camper_password=make_password(
+                    password), camper_registrationdate=datetime.date.today(), camper_name=name)
                 newUser.save()
-                return render(request,'home.html')
+                return render(request, 'home.html')
             except:
                 error_message = 'Internal Error. Please try Again.'
     return render(request, 'signup.html', {'error_message': error_message})

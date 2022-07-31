@@ -22,12 +22,20 @@
         border: 2px;
         border-color: black;
         border-radius: 7px;
+        transition-duration: .4s;
     }
 
-    /* .btn:hover {
+    .btn:hover {
         background-color: #f4d8ae;
         color: black;
-    } */
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+
+    .btn:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(2px);
+    }
 
     .custom-select {
         color: black;
@@ -81,7 +89,7 @@
             </div>
     
             <div class = "col-3" align = "center">
-                <a class="btn btn-primary" href="reservations" role="button">Make a Reservation</a>
+                <a class="btn" href="reservations" role="button">Make a Reservation</a>
             </div>
             
             <div class = "col-3" align = "center">
@@ -89,7 +97,7 @@
                     <form action="" method="POST">
                     {% csrf_token %}
                     <div>
-                        <input class="btn btn-primary" type="submit" value = "Submit Rating">
+                        <input class="btn" type="submit" value = "Submit Rating">
                         <div class="btn form-group" style="padding: 0%;  width: 10%;">
                             <select name = "rating-dropdown" class="custom-select" style = "width: 100%;">
                                 <option value="5">5</option>
@@ -107,7 +115,7 @@
 
     
             <div class = "col-3" align = "center">
-                Average Rating: {{ current_park.park_avgrating }} / 5.0
+                Average Rating: {{ current_park.park_avgrating|floatformat }} / 5.0
             </div>
         </div>
         
@@ -119,7 +127,9 @@
     
             <div class = "col-7" align = "center" style="padding: 2%;">
                 {% load static %}
-                <img src = "{% static 'Yosemite.jpg' %}" style="width: 65%;">
+                {% if current_park.park_name == "Yosemite National Park" %}
+                    <img src = "{% static 'Yosemite.jpg' %}" style="width: 65%; border-radius: 10%; border-style: double; border-color: black;">
+                {% endif %}
             </div>
         </div>
     

@@ -3,6 +3,48 @@
 
 {% block content%}
 
-    <h1>Reservations</h1>
+<section class="h-100" style="padding-top: 10%;">
+    <div class="container h-100">
+        <div class="row justify-content-sm-center h-100">
+        <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+            <div class="card shadow-lg">
+            <div class="card-body p-5">
+                <h1 class="fs-4 card-title fw-bold mb-4" id="national-park">{{ national_park }}</h1>
+                {% if error_message != '' %}
+                <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+                {% endif %}
+                <form method="POST" class="needs-validation" action="{% url 'reservations' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="mb-2 text-muted" for="start-date">Start Date</label>
+                    <input id="start-date" type="start-date" class="form-control" name="start-date" required placeholder="MM/DD/YYYY">
+                    <div class="invalid-feedback">
+                        Start Date is required
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="mb-2 text-muted" for="end-date">End Date</label>
+                    <input id="end-date" type="end-date" class="form-control" name="end-date" required placeholder="MM/DD/YYYY">
+                    <div class="invalid-feedback">
+                    End Date is required
+                    </div>
+                </div>
+
+                <div class="align-items-center d-flex">
+                    <button type="submit" class="btn btn-primary ms-auto">
+                    Submit
+                    </button>
+                </div>
+                {% if estimated_cost != '' %}
+                <div class="alert alert-success" role="alert"> Your spot is Reserved! Estimated Cost: ${{ estimated_cost }}</div>
+                {% endif %}
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </section>
     
 {% endblock %}

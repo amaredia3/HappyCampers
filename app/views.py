@@ -55,6 +55,7 @@ def nationalParks(request):
     current_camper = camper_list.filter(
         camper_id=request.session['user-id'])[0].camper_id
 
+
     ##################################################################
 
     # Used for testing Different Parks

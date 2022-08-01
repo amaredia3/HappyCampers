@@ -34,7 +34,9 @@ def home(request):
 
 
 def parks(request):
-    return render(request, 'parks.html')
+    park_list = Park.objects.all()
+    return render(request, 'parks.html', 
+                    {'park_list': park_list})
 
 
 def nationalParks(request):

@@ -22,12 +22,20 @@
         border: 2px;
         border-color: black;
         border-radius: 7px;
+        transition-duration: .4s;
     }
 
-    /* .btn:hover {
+    .btn:hover {
         background-color: #f4d8ae;
         color: black;
-    } */
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+
+    .btn:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(2px);
+    }
 
     .custom-select {
         color: black;
@@ -75,15 +83,13 @@
     
     <div class = "container-fluid h-100%" style="background-color: #b6c48e; height: 100%;">
     
-        {% for park in park_list %}
-    
         <div class = "row" style = "margin-bottom: 1.5; padding: 2%;">
             <div class = "col-3" style = "padding: 0%;">
-                <h1>{{ park.park_name }}</h1 >
+                <h1>{{ current_park.park_name }}</h1 >
             </div>
     
             <div class = "col-3" align = "center">
-                <a class="btn btn-primary" href="reservations" role="button">Make a Reservation</a>
+                <a class="btn" href="reservations" role="button">Make a Reservation</a>
             </div>
             
             <div class = "col-3" align = "center">
@@ -91,18 +97,17 @@
                     <form action="" method="POST">
                     {% csrf_token %}
                     <div>
-                        <div class="btn form-group" style="padding: 0%;">
-                            <select name = "rating-dropdown" class="custom-select" required>
-                              <option value="">Rate Park</option>
-                              <option value="1">1</option>
-                              <option value="2">2</option>
-                              <option value="3">3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
+                        <input class="btn" type="submit" value = "Submit Rating">
+                        <div class="btn form-group" style="padding: 0%;  width: 10%;">
+                            <select name = "rating-dropdown" class="custom-select" style = "width: 100%;">
+                                <option value="5">5</option>
+                                <option value="4">4</option>                            
+                                <option value="3">3</option>    
+                                <option value="2">2</option>                          
+                                <option value="1">1</option>
                             </select>
     
                         </div>
-                        <input class="btn btn-primary" type="submit" value = "Submit Rating">
                     </div>
                     </form>
             </div>
@@ -110,18 +115,21 @@
 
     
             <div class = "col-3" align = "center">
-                Average Rating: {{ park.park_avgrating }} / 5.0
+                Average Rating: {{ current_park.park_avgrating|floatformat }} / 5.0
             </div>
         </div>
         
     
         <div class= "row">
             <div class  = "col-5" style="padding: 2%;">
-                <h3>Park Description:</h3> <br> <br> {{ park.park_description }} 
+                <h3>Park Description:</h3> <br> <br> {{ current_park.park_description }} 
             </div>
     
             <div class = "col-7" align = "center" style="padding: 2%;">
-                <img src= "yosemite.jpg" alt = "Yosemite">
+                {% load static %}
+                {% if current_park.park_name == "Yosemite National Park" %}
+                    <img src = "{% static 'Yosemite.jpg' %}" style="width: 65%; border-radius: 10%; border-style: double; border-color: black;">
+                {% endif %}
             </div>
         </div>
     
@@ -160,8 +168,6 @@
                 </table>
             </div>
         </div>
-    
-        {% endfor %}
         
     </div>
 

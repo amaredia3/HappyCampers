@@ -145,6 +145,8 @@ STATICFILES_DIRS = [
     Path.joinpath(BASE_DIR, "static"),
 ]
 
+SESSION_ENGINE= 'django.contrib.sessions.backends.cached_db'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

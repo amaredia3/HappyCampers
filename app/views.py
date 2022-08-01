@@ -2,7 +2,6 @@ from distutils.log import error
 from multiprocessing import Event
 from django.shortcuts import render
 from django.http import HttpResponse
-from scipy import rand
 from .models import Camper, Park, Event, Review, Reservation
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
@@ -10,7 +9,6 @@ import datetime
 from django.db.models import Max
 from datetime import datetime
 from django.http import HttpResponseRedirect
-import random
 
 
 def login(request):
@@ -53,7 +51,9 @@ def nationalParks(request):
     request.session['park-id'] = current_park.park_id
 
     camper_list = Camper.objects.all().order_by("camper_id")
-    current_camper = camper_list[0]
+
+    current_camper = camper_list.filter(
+        camper_id=request.session['user-id'])[0].camper_id
 
     ##################################################################
 

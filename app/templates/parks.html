@@ -145,13 +145,18 @@
       <tbody id="parksTable">
         {% for park in park_list %}
         <tr>
-          <td>{{ park.park_name }}</td>
+          <td for="park-name"> {{ park.park_name }}</td>
           <td>{{ park.park_state }}</td>
           <th>
             <script language="javascript" type="text/javascript">
               var parkhref = park.park_name; 
             </script>
-            <a class="btn btn-primary" href="nationalParks.html" onclick="location.href=this.href+'?park='+parkhref; return false;" role="button">View Park</a>
+
+            <form action="" method = "POST">
+              {% csrf_token %}
+              <input class="btn btn-primary" type="submit" value = "View Park">
+            </form>
+            
           </th>
           <td>{{ park.park_avgrating }}</td>
         </tr>

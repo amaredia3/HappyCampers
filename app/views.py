@@ -82,8 +82,6 @@ def nationalParks(request):
 
     event_list = Event.objects.filter(park_id=current_park.park_id)
 
-    request.session['park-id'] = park_list[0].park_id
-
     if request.method == 'POST':
 
         newRating = Review()

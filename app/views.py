@@ -46,6 +46,8 @@ def nationalParks(request):
     park_list = Park.objects.all().order_by("park_id")
     current_park = park_list[0]
 
+    request.session['park-id'] = current_park.park_id
+
     camper_list = Camper.objects.all().order_by("camper_id")
     current_camper = camper_list[0]
 

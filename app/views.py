@@ -62,7 +62,7 @@ def nationalParks(request):
 
 def reservations(request):
     error_message = ''
-    if 'park' in request.session:
+    if 'park-id' in request.session:
         national_park = Park.objects.filter(park_id=request.session['park-id'])[0]
     else:
         national_park = ''

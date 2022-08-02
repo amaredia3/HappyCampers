@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import check_password
 from django.db.models import Max
 from datetime import date, datetime
 from django.http import HttpResponseRedirect
-import random
+import random, math
 
 
 def login(request, parkID = ""):
@@ -126,7 +126,9 @@ def reservations(request, parkID = ""):
             if last_id['reservation_id__max'] == None:
                 last_id['reservation_id__max'] = 0
             time_delta = end_date - start_date
-            cost = national_park.park_sevendaycost * (time_delta.days / 7.0)
+
+            cost = national_park.park_sevendaycost * math.ceil(time_delta.days / 7)
+
             estimated_cost = cost
             newReservation = Reservation(
                 park=national_park,

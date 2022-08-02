@@ -22,7 +22,7 @@ urlpatterns = [
     path('', include('app.urls')),
     path('home/', include('app.urls')),
     path('parks/', include('app.urls')),
-    path('nationalParks/', include('app.urls')),
+    path('nationalParks/<parkID>/', include('app.urls')),
     path('reservations/', include('app.urls')),
     path('signup/', include('app.urls')),
     path('admin/', admin.site.urls),

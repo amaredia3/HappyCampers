@@ -38,7 +38,7 @@
                     </button>
                 </div>
                 {% if estimated_cost != '' %}
-                <div class="alert alert-success" role="alert"> Your spot is Reserved! Estimated Cost: ${{ estimated_cost }}</div>
+                <div class="alert alert-success" role="alert"> Your spot is Reserved! Estimated Cost: ${{ estimated_cost|floatformat:2 }}</div>
                 {% endif %}
                 </form>
                 <div>

@@ -5,9 +5,8 @@ from django.http import HttpResponse
 from .models import Camper, Park, Event, Review, Reservation
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
-import datetime
 from django.db.models import Max
-from datetime import datetime
+from datetime import date, datetime
 from django.http import HttpResponseRedirect
 
 
@@ -53,7 +52,7 @@ def nationalParks(request):
     camper_list = Camper.objects.all().order_by("camper_id")
 
     current_camper = camper_list.filter(
-        camper_id=request.session['user-id'])[0].camper_id
+        camper_id=request.session['user-id'])[0]
 
 
     ##################################################################
@@ -87,7 +86,7 @@ def nationalParks(request):
 
         newRating = Review()
         newRating.review_rating = request.POST.get('rating-dropdown')
-        newRating.review_date = datetime.date.today()
+        newRating.review_date = date.today()
         newRating.review_id = random.randint(0, 999)
         newRating.park = current_park
         newRating.camper = current_camper
@@ -162,7 +161,7 @@ def signup(request):
             last_id = Camper.objects.aggregate(Max('camper_id'))
             try:
                 newUser = Camper(camper_id=last_id['camper_id__max']+1, camper_email=email, camper_password=make_password(
-                    password), camper_registrationdate=datetime.date.today(), camper_name=name)
+                    password), camper_registrationdate=date.today(), camper_name=name)
                 newUser.save()
                 request.session['user-id'] = Camper.objects.filter(
                     camper_email=email).only('camper_id')[0].camper_id

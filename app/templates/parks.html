@@ -55,9 +55,6 @@
                 <a class = "navbar-link" href = "reservations">Reservation</a>
                 
             </div>
-            <div class = "col-8">
-                <a class = "navbar-link" href = "signup">Log In/Sign Up</a>
-            </div>
         </div>
 
     </div>
@@ -158,7 +155,9 @@
             </form>
             
           </th>
-          <td>{{ park.park_avgrating }}</td>
+
+          <td>{{ park.park_avgrating|floatformat }} / 5</td>
+
         </tr>
         {% endfor %}
       </tbody>

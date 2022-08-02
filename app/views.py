@@ -8,9 +8,10 @@ from django.contrib.auth.hashers import check_password
 from django.db.models import Max
 from datetime import date, datetime
 from django.http import HttpResponseRedirect
+import random
 
 
-def login(request):
+def login(request, parkID = ""):
     error_message = ''
     if request.method == "POST":
         email = request.POST['email']
@@ -26,78 +27,75 @@ def login(request):
             if check_password(password, user_password_encrypted):
                 request.session['user-id'] = Camper.objects.filter(
                     camper_email=email).only('camper_id')[0].camper_id
-                return render(request, 'home.html')
+                return HttpResponseRedirect('home')
             else:
                 error_message = "Invalid Password"
     return render(request, 'login.html', {'error_message': error_message})
 
 
-def home(request):
+def home(request, parkID = ""):
     return render(request, 'home.html')
 
 
-def parks(request):
-    return render(request, 'parks.html')
+def parks(request, parkID = ""):
+
+    park_list = Park.objects.all()
+
+    # parkName = request.POST['park-name']
+
+    if request.method == 'POST':
+
+        return HttpResponseRedirect("nationalParks")
+
+    return render(request, 'parks.html',
+                  {'park_list': park_list})
 
 
-def nationalParks(request):
+def nationalParks(request, parkID):
+
+
 
     #still need to receive user and park object from parks page#######
 
     park_list = Park.objects.all().order_by("park_id")
-    current_park = park_list[0]
 
-    request.session['park-id'] = current_park.park_id
+    for park in park_list:
+        if park.park_id == parkID:
+            request.session['park-id'] = park.park_id
+
+    event_list = Event.objects.all()
+
+    # current_park = park_list.filter(park_id = parkID)
 
     camper_list = Camper.objects.all().order_by("camper_id")
 
     current_camper = camper_list.filter(
         camper_id=request.session['user-id'])[0]
 
-
-    ##################################################################
-
-    # Used for testing Different Parks
-    # for park in park_list:
-    #     if park.park_name == 'Yosemite National Park':
-    #         current_park = park
-    #     elif park.park_name == 'Yellowstone National Park':
-    #         current_park = park
-    #     elif park.park_name == 'Glacier National Park':
-    #         current_park = park
-    #     elif park.park_name == 'Grand Canyon National Park':
-    #         current_park = park
-    #     elif park.park_name == 'Zion National Park':
-    #         current_park = park
-    #     elif park.park_name == 'Grand Teton National Park':
-    #         current_park = park
-    #     elif park.park_name == 'Bryce Canyon National Park':
-    #         current_park = park
-    #     elif park.park_name == 'Rocky Moutain National Park':
-    #         current_park = park
-    #     elif park.park_name == 'Arches National Park':
-    #         current_park = park
-    #     elif park.park_name == 'Great Smoky Mountains National Park':
-    #         current_park = park
-
-    event_list = Event.objects.filter(park_id=current_park.park_id)
-
     if request.method == 'POST':
+        
+        current_park = Park()
+
+        for park in park_list:
+            if park.park_id == parkID:
+                current_park = park
 
         newRating = Review()
         newRating.review_rating = request.POST.get('rating-dropdown')
         newRating.review_date = date.today()
         newRating.review_id = random.randint(0, 999)
         newRating.park = current_park
+
+
         newRating.camper = current_camper
         newRating.save()
         return HttpResponseRedirect("")
 
     return render(request, 'nationalParks.html',
-                  {'event_list': event_list, 'current_park': current_park})
+                {'park_ID': parkID, 'park_list': park_list, 'event_list': event_list})
 
 
-def reservations(request):
+def reservations(request, parkID = ""):
     error_message = ''
     if 'park-id' in request.session:
         national_park = Park.objects.filter(
@@ -149,7 +147,7 @@ def reservations(request):
     return render(request, 'reservations.html', {'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost, 'reservations': reservations})
 
 
-def signup(request):
+def signup(request, parkID = ""):
     error_message = ''
     if request.method == "POST":
         email = request.POST['email']
@@ -165,7 +163,7 @@ def signup(request):
                 newUser.save()
                 request.session['user-id'] = Camper.objects.filter(
                     camper_email=email).only('camper_id')[0].camper_id
-                return render(request, 'home.html')
+                return HttpResponseRedirect('home')
             except:
                 error_message = 'Internal Error. Please try Again.'
     return render(request, 'signup.html', {'error_message': error_message})

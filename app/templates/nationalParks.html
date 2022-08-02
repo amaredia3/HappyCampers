@@ -52,18 +52,18 @@
                 <i class="fa fa-color fa-tree fa-lg"></i>
             </div>
             <div class = "col-1">
-                <a class = "navbar-link" href = "home">Home</a>
+                <a class = "navbar-link" href = "/home">Home</a>
             </div>
             <div class = "col-1">
-                <a class = "navbar-link" href = "parks">Parks</a>
+                <a class = "navbar-link" href = "/parks">Parks</a>
             </div>
                 
             <div class = "col-1">
-                <a class = "navbar-link" href = "reservations">Reservation</a>
+                <a class = "navbar-link" href = "/reservations">Reservation</a>
                 
             </div>
             <div class = "col-8">
-                <a class = "navbar-link" href = "signup">Log In/Sign Up</a>
+                <a class = "navbar-link" href = "/signup">Log In/Sign Up</a>
             </div>
         </div>
 
@@ -80,96 +80,102 @@
     
     
     
-    
-    <div class = "container-fluid h-100%" style="background-color: #b6c48e; height: 100%;">
-    
-        <div class = "row" style = "margin-bottom: 1.5; padding: 2%;">
-            <div class = "col-3" style = "padding: 0%;">
-                <h1>{{ current_park.park_name }}</h1 >
-            </div>
-    
-            <div class = "col-3" align = "center">
-                <a class="btn" href="reservations" role="button">Make a Reservation</a>
-            </div>
+    {% for park in park_list %}
+        {% if park.park_id == park_ID %}
+            <div class = "container-fluid h-100%" style="background-color: #b6c48e; height: 100%;">
             
-            <div class = "col-3" align = "center">
-
-                    <form action="" method="POST">
-                    {% csrf_token %}
-                    <div>
-                        <input class="btn" type="submit" value = "Submit Rating">
-                        <div class="btn form-group" style="padding: 0%;  width: 10%;">
-                            <select name = "rating-dropdown" class="custom-select" style = "width: 100%;">
-                                <option value="5">5</option>
-                                <option value="4">4</option>                            
-                                <option value="3">3</option>    
-                                <option value="2">2</option>                          
-                                <option value="1">1</option>
-                            </select>
-    
-                        </div>
+                <div class = "row" style = "margin-bottom: 1.5; padding: 2%;">
+                    <div class = "col-3" style = "padding: 0%;">
+                        <h1>Park Name: {{ park.park_name }}</h1 >
                     </div>
-                    </form>
-            </div>
-
-
-    
-            <div class = "col-3" align = "center">
-                Average Rating: {{ current_park.park_avgrating|floatformat }} / 5.0
-            </div>
-        </div>
-        
-    
-        <div class= "row">
-            <div class  = "col-5" style="padding: 2%;">
-                <h3>Park Description:</h3> <br> <br> {{ current_park.park_description }} 
-            </div>
-    
-            <div class = "col-7" align = "center" style="padding: 2%;">
-                {% load static %}
-                {% if current_park.park_name == "Yosemite National Park" %}
-                    <img src = "{% static 'Yosemite.jpg' %}" style="width: 65%; border-radius: 10%; border-style: double; border-color: black;">
-                {% endif %}
-            </div>
-        </div>
-    
-        <div class= "row" style = "height:fit-content;">
-            <div class  = "col" style="padding: 2%; background-color: #b6c48e;">
-                <h3>Upcoming Events:</h3> <br> <br>
-            </div>
-        </div>
-    
-        <div class= "row justify-content-center" style="background-color: #b6c48e; padding-bottom: 2%;">
-            <div class  = "col-6">
-                <table class="table table-bordered" style = "background-color:#f4d8ae; border-color: black;">
+            
+                    <div class = "col-3" align = "center">
+                        <a class="btn" href="/reservations" role="button">Make a Reservation</a>
+                    </div>
                     
-                    <thead>
-                      <tr>
-                        <th scope="col-2">Event Name</th>
-                        <th scope="col-2">Date</th>
-                        <th scope="col-2">Description</th>
-                      </tr>
-                    </thead>
-    
-                    <tbody>
-    
-                    {% for event in event_list %}
-    
-                      <tr>
-                        <td>{{event.event_name}} </td>
-                        <td>{{event.event_date}} </td>
-                        <td>{{event.event_description}} </td>
-                      </tr>
-    
-                    {% endfor %}
-    
-                    </tbody>
-    
-                </table>
+                    <div class = "col-3" align = "center">
+
+                            <form action="" method="POST">
+                            {% csrf_token %}
+                            <div>
+                                <input class="btn" type="submit" value = "Submit Rating">
+                                <div class="btn form-group" style="padding: 0%;  width: 10%;">
+                                    <select name = "rating-dropdown" class="custom-select" style = "width: 100%;">
+                                        <option value="5">5</option>
+                                        <option value="4">4</option>                            
+                                        <option value="3">3</option>    
+                                        <option value="2">2</option>                          
+                                        <option value="1">1</option>
+                                    </select>
+            
+                                </div>
+                            </div>
+                            </form>
+                    </div>
+
+
+            
+                    <div class = "col-3" align = "center">
+                        Average Rating: {{ park.park_avgrating|floatformat }} / 5.0
+                    </div>
+                </div>
+                
+            
+                <div class= "row">
+                    <div class  = "col-5" style="padding: 2%;">
+                        <h3>Park Description:</h3> <br> <br> {{ park.park_description }} 
+                    </div>
+            
+                    <div class = "col-7" align = "center" style="padding: 2%;">
+                        {% load static %}
+                        {% if park.park_name == "Yosemite National Park" %}
+                            <img src = "{% static 'Yosemite.jpg' %}" style="width: 65%; border-radius: 10%; border-style: double; border-color: black;">
+                        {% endif %}
+                    </div>
+                </div>
+            
+                <div class= "row" style = "height:fit-content;">
+                    <div class  = "col" style="padding: 2%; background-color: #b6c48e;">
+                        <h3>Upcoming Events:</h3> <br> <br>
+                    </div>
+                </div>
+            
+                <div class= "row justify-content-center" style="background-color: #b6c48e; padding-bottom: 2%;">
+                    <div class  = "col-6">
+                        <table class="table table-bordered" style = "background-color:#f4d8ae; border-color: black;">
+                            
+                            <thead>
+                            <tr>
+                                <th scope="col-2">Event Name</th>
+                                <th scope="col-2">Date</th>
+                                <th scope="col-2">Description</th>
+                            </tr>
+                            </thead>
+            
+                            <tbody>
+            
+                            {% for event in event_list %}
+                                {% if event.park_id == park_ID %}
+            
+                                    <tr>
+                                        <td>{{event.event_name}} </td>
+                                        <td>{{event.event_date}} </td>
+                                        <td>{{event.event_description}} </td>
+                                    </tr>
+
+                                {% endif %}
+            
+                            {% endfor %}
+            
+                            </tbody>
+            
+                        </table>
+                    </div>
+                </div>
+                
             </div>
-        </div>
-        
-    </div>
+        {% endif %}
+    {% endfor %}
 
     <div class = "footer" style="width: 100%; height: 100px; background-color: #D9D9D9;">
 

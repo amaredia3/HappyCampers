@@ -15,7 +15,7 @@
                 {% endif %}
                 <form method="POST" class="needs-validation" action="{% url 'reservations' %}">
                 {% csrf_token %}
-                <p> Create a reservation </p>
+                <p> Plan a visit </p>
                 <div class="mb-3">
                     <label class="mb-2 text-muted" for="start-date">Start Date</label>
                     <input id="start-date" type="start-date" class="form-control" name="start-date" required placeholder="MM/DD/YYYY">

@@ -58,7 +58,7 @@
                             <tr>
                                 <td>{{ r.reservation_startdate }}</td>
                                 <td>{{ r.reservation_enddate }}</td>
-                                <td>${{ r.reservation_totalcost}}</td>
+                                <td>${{ r.reservation_totalcost|floatformat:2}}</td>
                                 <td><button type="button" class="btn btn-link">x</button></td>
                             </tr>
                             {% endfor %}

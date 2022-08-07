@@ -48,7 +48,7 @@ def parks(request, parkID = ""):
     return render(request, 'parks.html',
                   {'park_list': park_list})
 
-
+"""
 def nationalParks(request, parkID):
 
 
@@ -90,7 +90,55 @@ def nationalParks(request, parkID):
 
     return render(request, 'nationalParks.html',
                 {'park_ID': parkID, 'park_list': park_list, 'event_list': event_list, 'review_list': review_list, 'current_camper': current_camper})
+"""
 
+def nationalParks(request, parkID):
+
+    park_list = Park.objects.all().order_by("park_id")
+
+    for park in park_list:
+        if park.park_id == parkID:
+            request.session['park-id'] = park.park_id
+
+    event_list = Event.objects.all()
+
+    review_list = Review.objects.all()
+
+    camper_list = Camper.objects.all().order_by("camper_id")
+
+    current_camper = camper_list.filter(
+        camper_id=request.session['user-id'])[0]
+
+    if request.method == 'POST':
+        
+        newReview = True
+
+        current_park = Park()
+
+        for park in park_list:
+            if park.park_id == parkID:
+                current_park = park
+
+        for review in review_list:
+            if review.park_id == parkID and review.camper == current_camper:
+                newReview = False
+                review.review_rating = request.POST.get('rating-dropdown')
+                review.review_date = date.today()
+                review.save()
+
+        if newReview == True:
+            newRating = Review()
+            newRating.review_rating = request.POST.get('rating-dropdown')
+            newRating.review_date = date.today()
+            newRating.review_id = random.randint(0, 999)
+            newRating.park = current_park
+            newRating.camper = current_camper
+            newRating.save()
+        
+        return HttpResponseRedirect("")
+
+    return render(request, 'nationalParks.html',
+                {'park_ID': parkID, 'park_list': park_list, 'event_list': event_list, 'review_list': review_list, 'current_camper': current_camper})
 
 def reservations(request, parkID = ""):
     error_message = ''

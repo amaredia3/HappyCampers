@@ -27,4 +27,5 @@ urlpatterns = [
     path('updateReservations/<reservationID>/',include('app.urls')),
     path('signup/', include('app.urls')),
     path('admin/', admin.site.urls),
+    path('changePassword/', include('app.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

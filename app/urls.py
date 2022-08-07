@@ -8,4 +8,5 @@ path('reservations',views.reservations, name='reservations'),
 path('updateReservations/<int:reservationID>/',views.updateReservations, name='updateReservations'),
 path('nationalParks/<int:parkID>/',views.nationalParks, name='nationalParks'),
 path('signup',views.signup, name='signup'),
+path('changePassword',views.changePassword, name='changePassword')
 ]

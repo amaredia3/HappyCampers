@@ -15,7 +15,13 @@
                     <h2 class="display-1 text-white pt-5 mb-2"><strong>Happy Campers' HandBook</strong></h2>
                     <hr class="hr-light">
                     <h4 class="text-white my-4">To guide you though the United States' natural beauty.</h4>
-                    <a type="button" class="btn btn-light" href="/parks">View Parks</a>
+                    <a type="button" class="btn btn-primary" href="/parks">View Parks</a>
+                    <a type="button" class="btn btn-light" href="/">Log Out</a>
+                    <a type="button" class="btn btn-warning" href="/changePassword">Change Password</a>
+                    <form method="POST" action="{% url 'home' %}">
+                      {% csrf_token %}
+                      <input type="submit" name="deleteAccount" class="btn btn-danger" value="Delete Account">
+                    </form>
                 </div>
             </div>
         </div>

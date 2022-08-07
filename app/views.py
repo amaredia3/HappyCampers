@@ -32,6 +32,9 @@ def login(request, parkID = ""):
 
 
 def home(request, parkID = ""):
+    if request.method == 'POST':
+        Camper.objects.filter(camper_id=request.session['user-id'])[0].delete()
+        return HttpResponseRedirect("signup")
     return render(request, 'home.html')
 
 
@@ -252,3 +255,22 @@ def signup(request, parkID = ""):
                 error_message = 'Internal Error. Please try Again.'
     return render(request, 'signup.html', {'error_message': error_message})
 
+def changePassword(request):
+    error_message = ''
+    if request.method == "POST":
+        email = request.POST['email']
+        password = request.POST['password']
+        newPassword = request.POST['newPassword']
+        try:
+            hashed_password = make_password(password)
+            user = Camper.objects.filter(
+                camper_email=email).only('camper_id')[0]
+        except:
+            user = None
+        if user is None:
+            error_message = 'Account for this email does not exist'
+        else:
+            user.camper_password = str(make_password(newPassword))
+            user.save()
+            return HttpResponseRedirect('home')
+    return render(request, 'changePassword.html', {'error_message': error_message})

@@ -151,6 +151,8 @@ def reservations(request, parkID = ""):
     reservations = ''
     start_date = None
     end_date = None
+    reservations = Reservation.objects.filter(camper=Camper.objects.filter(camper_id=request.session['user-id'])[0],
+                                            park=national_park)
     if request.method == "POST":
         try:
             start_date = datetime.strptime(
@@ -158,14 +160,14 @@ def reservations(request, parkID = ""):
             end_date = datetime.strptime(request.POST['end-date'], '%m/%d/%Y')
         except:
             error_message = "Invalid date format. Try Again."
-            return render(request, 'reservations.html', {'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost})
+            return render(request, 'reservations.html', {'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost, 'reservations': reservations})
         try:
             time_delta = end_date - start_date
             if time_delta.days < 0:
                 raise Exception("Start and End dates are not valid.")
         except:
             error_message = 'Incompatible Start and End Dates.'
-            return render(request, 'reservations.html', {'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost})
+            return render(request, 'reservations.html', {'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost, 'reservations': reservations})
         try:
             last_id = Reservation.objects.aggregate(Max('reservation_id'))
             if last_id['reservation_id__max'] == None:

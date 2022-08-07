@@ -146,6 +146,7 @@ def reservations(request, parkID = ""):
     return render(request, 'reservations.html', {'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost, 'reservations': reservations})
 
 
+
 def signup(request, parkID = ""):
     error_message = ''
     if request.method == "POST":

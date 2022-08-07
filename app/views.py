@@ -138,7 +138,7 @@ def nationalParks(request, parkID):
             newRating.camper = current_camper
             newRating.save()
         
-        return HttpResponseRedirect("")
+        #return HttpResponseRedirect("")
 
     return render(request, 'nationalParks.html',
                 {'park_ID': parkID, 'park_list': park_list, 'event_list': event_list, 'review_list': review_list, 'current_camper': current_camper})

@@ -63,6 +63,8 @@ def nationalParks(request, parkID):
 
     event_list = Event.objects.all()
 
+    review_list = Review.objects.all()
+
     # current_park = park_list.filter(park_id = parkID)
 
     camper_list = Camper.objects.all().order_by("camper_id")
@@ -78,19 +80,16 @@ def nationalParks(request, parkID):
             if park.park_id == parkID:
                 current_park = park
 
-        newRating = Review()
-        newRating.review_rating = request.POST.get('rating-dropdown')
-        newRating.review_date = date.today()
-        newRating.review_id = random.randint(0, 999)
-        newRating.park = current_park
-
-
-        newRating.camper = current_camper
-        newRating.save()
+        for review in review_list:
+            if review.park_id == parkID and review.camper == current_camper:
+                review.review_rating = request.POST.get('rating-dropdown')
+                review.review_date = date.today()
+                review.save()
+                
         return HttpResponseRedirect("")
 
     return render(request, 'nationalParks.html',
-                {'park_ID': parkID, 'park_list': park_list, 'event_list': event_list})
+                {'park_ID': parkID, 'park_list': park_list, 'event_list': event_list, 'review_list': review_list, 'current_camper': current_camper})
 
 
 def reservations(request, parkID = ""):
@@ -146,39 +145,6 @@ def reservations(request, parkID = ""):
         error_message = 'Could not get your reservations.'
     return render(request, 'reservations.html', {'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost, 'reservations': reservations})
 
-def updateReservations(request, reservationID):
-    if 'park-id' in request.session:
-        national_park = Park.objects.filter(
-            park_id=request.session['park-id'])[0]
-    reservationList = Reservation.objects.filter(camper=Camper.objects.filter(camper_id=request.session['user-id'])[0],
-                                                  park=national_park)
-    updateMessage = ''
-    deleteMessage = ''
-    if request.method == "POST":
-        thisReservation_id = request.POST['reservation-id']
-        start_date = datetime.strptime(request.POST['start-date'], '%m/%d/%Y')
-        end_date = datetime.strptime(request.POST['end-date'], '%m/%d/%Y')
-        reservationToEdit = Reservation.objects.filter(reservation_id=int(thisReservation_id))[0]
-        if start_date.strftime('%m/%d/%Y') == reservationToEdit.reservation_startdate.strftime('%m/%d/%Y') and end_date.strftime('%m/%d/%Y') == reservationToEdit.reservation_enddate.strftime('%m/%d/%Y'):
-            #delete reservation
-            Reservation.objects.filter(reservation_id=int(thisReservation_id))[0].delete()
-            deleteMessage = 'Reservation deleted successfully'
-            #return render(request,'updateReservations.html', {'reservationID': reservationID, 'reservationList': reservationList, 'message':message})
-            return render(request,'reservations.html', {'deleteMessage':deleteMessage,'national_park':national_park.park_name, 'reservations': Reservation.objects.filter(camper=Camper.objects.filter(camper_id=request.session['user-id'])[0],park=national_park) })
-        else:
-            #update reservation
-            reservationToEdit.reservation_startdate = start_date
-            reservationToEdit.reservation_enddate = end_date
-            time_delta = end_date - start_date
-            if time_delta.days <= 0:
-                return render(request, 'updateReservations.html', {'reservationID': reservationID, 'reservationList': reservationList, 'error_message': 'Invalid Dates. Try Again.'})
-            reservationToEdit.reservation_totalcost = national_park.park_sevendaycost * math.ceil(time_delta.days / 7)
-            #reservationToEdit.reservation_totalcost 
-            reservationToEdit.save()
-            updateMessage = 'Reservation updated successfully. New Total: $' + str(national_park.park_sevendaycost * math.ceil(time_delta.days / 7))
-            return render(request,'reservations.html', {'updateMessage':updateMessage, 'national_park':national_park.park_name, 'reservations':Reservation.objects.filter(camper=Camper.objects.filter(camper_id=request.session['user-id'])[0],park=national_park)})
-        #return render(request,'updateReservations.html', {'reservationID': reservationID, 'reservationList': reservationList, 'datesMatch': datesMatch, 'tsd':tsd, 'sd':start_date})
-    return render(request, 'updateReservations.html', {'reservationID': reservationID, 'reservationList': reservationList})
 
 def signup(request, parkID = ""):
     error_message = ''
@@ -200,3 +166,4 @@ def signup(request, parkID = ""):
             except:
                 error_message = 'Internal Error. Please try Again.'
     return render(request, 'signup.html', {'error_message': error_message})
+

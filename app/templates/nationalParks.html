@@ -41,6 +41,14 @@
         color: black;
     }
 
+    .table td {
+        text-align: center;
+    } 
+
+    .table tr {
+        text-align: center;
+    } 
+
     
 </style>
 
@@ -194,6 +202,46 @@
                         </table>
                     </div>
                 </div>
+
+                <div class= "row" style = "height:fit-content;">
+                    <div class  = "col" style="padding: 2%; background-color: #b6c48e;">
+                        <h3>Your Review:</h3> <br> <br>
+                    </div>
+                </div>
+
+                <div class= "row justify-content-center" style="background-color: #b6c48e; padding-bottom: 2%;">
+                    <div class  = "col-6">
+                        <table class="table table-bordered" style = "background-color:#f4d8ae; border-color: black;">
+                            
+                            <thead>
+                            <tr>
+                                <th scope="col-2">Review Rating</th>
+                                <th scope="col-2">Date of Review</th>
+                                <th scope="col-2">Remove?</th>
+                            </tr>
+                            </thead>
+            
+                            <tbody>
+            
+                            {% for review in review_list %}
+                                {% if review.camper == current_camper and review.park_id == park_ID %}
+            
+                                    <tr>
+                                        <td>{{review.review_rating}} </td>
+                                        <td>{{review.review_date}} </td>
+                                        <td><button><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+
+                                    </tr>
+
+                                {% endif %}
+            
+                            {% endfor %}
+            
+                            </tbody>
+            
+                        </table>
+                    </div>
+                </div>
                 
             </div>
         {% endif %}
@@ -206,11 +254,3 @@
 </div>
 
 {% endblock content %}
-
-
-
-
-
-
-
-

@@ -9,7 +9,7 @@ from datetime import date, datetime
 from django.http import HttpResponseRedirect
 import random, math
 
-
+#views
 def login(request, parkID = ""):
     error_message = ''
     if request.method == "POST":

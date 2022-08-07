@@ -11,10 +11,6 @@
         <script type="text/javascript"> 
             $(function(){$('.datepick').datepicker(); }); 
         </script> 
-
-<h1>Dates Match: {{datesMatch}}</h1>
-<h1>TSD: {{tsd}}</h1>
-<h1>SD: {{sd}}</h1>
 {% for r in reservationList %} 
 {% if r.reservation_id == reservationID %}
 <section class="h-100" style="padding-top: 5%">

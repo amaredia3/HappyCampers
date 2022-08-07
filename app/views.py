@@ -1,6 +1,3 @@
-from distutils.log import error
-from multiprocessing import Event
-from turtle import update
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Camper, Park, Event, Review, Reservation

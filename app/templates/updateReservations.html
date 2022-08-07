@@ -1,0 +1,93 @@
+{% extends 'base.html' %} {% load static %} {% block content%}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>      
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"> </script> 
+        <script type="text/javascript" src="../js/jquery.min.js"></script>
+        <script type="text/javascript" src="../js/flexcroll.js"></script>
+        <script type="text/javascript" src="../js/jquery-ui-1.8.18.custom.min.js"></script>
+        <script type="text/javascript" src="../js/JScript.js"></script>
+        <title>calendar</title>    
+        <script type="text/javascript"> 
+            $(function(){$('.datepick').datepicker(); }); 
+        </script> 
+
+<h1>Dates Match: {{datesMatch}}</h1>
+<h1>TSD: {{tsd}}</h1>
+<h1>SD: {{sd}}</h1>
+{% for r in reservationList %} 
+{% if r.reservation_id == reservationID %}
+<section class="h-100" style="padding-top: 5%">
+  <div class="row justify-content-sm-center h-100">
+    <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+      <div class="card shadow-lg">
+        <div class="card-body p-5" style="background-color: #b6c48e">
+          <h1 class="fs-4 card-title fw-bold mb-4" id="national-park">
+            Edit Reservation
+          </h1>
+          <form method="POST" class="needs-validation">
+            {% csrf_token %}
+            <p>To delete reservation, hit Submit.</p>
+            <p>Tp update reservation, enter new dates and hit Submit.</p>
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+            {% endif %}
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="reservation-id"></label>
+              <input
+                id="reservation-id"
+                type="hidden"
+                class="form-control"
+                name="reservation-id"
+                placeholder="{{r.reservation_id}}"
+                value="{{r.reservation_id}}"
+              />
+              <div class="invalid-feedback">This Field id Locked</div>
+            </div>
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="start-date">Start Date</label>
+              <input
+                id="start-date"
+                type="start-date"
+                class="datepick"
+                name="start-date"
+                placeholder="{{r.reservation_startdate}}"
+                value="{{r.reservation_startdate}}"
+              />
+              <div class="invalid-feedback">Start Date is required</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="end-date">End Date</label>
+              <input
+                id="end-date"
+                type="end-date"
+                class="datepick"
+                name="end-date"
+                placeholder="{{r.reservation_enddate}}"
+                value="{{r.reservation_enddate}}"
+              />
+              <div class="invalid-feedback">End Date is required</div>
+            </div>
+
+            <div class="align-items-center d-flex">
+              <button
+                type="submit"
+                name="submit-reservation"
+                class="btn btn-primary ms-auto"
+              >
+                Edit/Delete
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer py-3 border-0" style="background-color:#f4d8ae;">
+            <div class="text-center">
+                View other reservations <a href="/reservations" class="text-dark"> here.</a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %} {% endfor %} {% endblock %}

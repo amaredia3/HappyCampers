@@ -138,6 +138,7 @@ def nationalParks(request, parkID):
             newRating.camper = current_camper
             newRating.save()
         
+        park_list = Park.objects.all().order_by("park_id")
         #return HttpResponseRedirect("")
 
     return render(request, 'nationalParks.html',

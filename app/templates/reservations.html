@@ -2,6 +2,18 @@
 {% load static %}
 
 {% block content%}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>      
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"> </script> 
+        <script type="text/javascript" src="../js/jquery.min.js"></script>
+        <script type="text/javascript" src="../js/flexcroll.js"></script>
+        <script type="text/javascript" src="../js/jquery-ui-1.8.18.custom.min.js"></script>
+        <script type="text/javascript" src="../js/JScript.js"></script>
+        <title>calendar</title>    
+        <script type="text/javascript"> 
+            $(function(){$('.datepick').datepicker(); }); 
+        </script> 
 
 <section class="h-100" style="padding-top: 5%;">
     <div class="container h-100">
@@ -10,7 +22,7 @@
             <div class="card shadow-lg">
             <div class="card-body p-5" style="background-color:#b6c48e">
                 <h1 class="fs-4 card-title fw-bold mb-4" id="national-park">{{ national_park }}</h1>
-                {% if error_message != '' %}
+                {% if error_message %}
                 <div class="alert alert-danger" role="alert">{{ error_message }}</div>
                 {% endif %}
                 <form method="POST" class="needs-validation" action="{% url 'reservations' %}">
@@ -18,7 +30,7 @@
                 <p> Plan a visit </p>
                 <div class="mb-3">
                     <label class="mb-2 text-muted" for="start-date">Start Date</label>
-                    <input id="start-date" type="start-date" class="form-control" name="start-date" required placeholder="MM/DD/YYYY">
+                    <input id="start-date" type="start-date" class="datepick" name="start-date" required placeholder="MM/DD/YYYY">
                     <div class="invalid-feedback">
                         Start Date is required
                     </div>
@@ -26,7 +38,7 @@
 
                 <div class="mb-3">
                     <label class="mb-2 text-muted" for="end-date">End Date</label>
-                    <input id="end-date" type="end-date" class="form-control" name="end-date" required placeholder="MM/DD/YYYY">
+                    <input id="end-date" type="end-date" class="datepick" name="end-date" required placeholder="MM/DD/YYYY">
                     <div class="invalid-feedback">
                     End Date is required
                     </div>
@@ -37,11 +49,17 @@
                     Submit
                     </button>
                 </div>
-                {% if estimated_cost != '' %}
+                {% if estimated_cost %}
                 <div class="alert alert-success" role="alert"> Your spot is Reserved! Estimated Cost: ${{ estimated_cost|floatformat:2 }}</div>
                 {% endif %}
                 </form>
                 <div>
+                    {% if updateMessage %}
+                    <div class="alert alert-success" role="alert">{{updateMessage}}</div>
+                    {% endif %}
+                    {% if deleteMessage %}
+                    <div class="alert alert-success" role="alert">{{deleteMessage}}</div>
+                    {% endif %}
                     {% if reservations %}
                         <p> Existing reservations: </p>
                         <table class="table" style="background-color:#f4d8ae;">
@@ -50,7 +68,7 @@
                                   <th scope="col">Start Date</th>
                                   <th scope="col">End Date</th>
                                   <th scope="col">Cost</th>
-                                  <th scope="col"></th>
+                                  <th scope="col">Edit</th>
                                 </tr>
                               </thead>
                             <tbody>
@@ -59,7 +77,13 @@
                                 <td>{{ r.reservation_startdate }}</td>
                                 <td>{{ r.reservation_enddate }}</td>
                                 <td>${{ r.reservation_totalcost|floatformat:2}}</td>
-                                <td><button type="button" class="btn btn-link">x</button></td>
+                                <td>
+                                    <form action="{% url 'reservations' %}" method = "POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="editReservation">
+                                        <a href='/updateReservations/{{r.reservation_id}}/'>...</a>
+                                    </form>
+                                </td>
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -69,7 +93,7 @@
             </div>
             <div class="card-footer py-3 border-0" style="background-color:#f4d8ae;">
                 <div class="text-center">
-                    View other parks <a href="parks" class="text-dark"> here.</a>
+                    View other parks <a href="/parks" class="text-dark"> here.</a>
                 </div>
             </div>
             </div>

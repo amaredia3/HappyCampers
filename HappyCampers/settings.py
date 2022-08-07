@@ -94,6 +94,8 @@ DATABASES = {
     }
 }
 
+DATE_FORMAT = 'm/d/Y'
+USE_L10N = False
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

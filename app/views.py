@@ -135,7 +135,6 @@ def nationalParks(request, parkID):
             newRating.camper = current_camper
             newRating.save()
         
-                
         return HttpResponseRedirect("")
 
     return render(request, 'nationalParks.html',
@@ -193,6 +192,7 @@ def reservations(request, parkID = ""):
     except:
         error_message = 'Could not get your reservations.'
     return render(request, 'reservations.html', {'national_park': national_park.park_name, 'error_message': error_message, 'estimated_cost': estimated_cost, 'reservations': reservations})
+
 
 def updateReservations(request, reservationID):
     if 'park-id' in request.session:

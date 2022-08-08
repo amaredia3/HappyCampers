@@ -225,12 +225,19 @@
                             <tbody>
             
                             {% for review in review_list %}
-                                {% if review.camper == current_camper and review.park_id == park_ID %}
-            
+                                {% if review.camper == current_camper and review.park_id == park_ID and review.review_rating != null %}            
                                     <tr>
                                         <td>{{review.review_rating}} </td>
                                         <td>{{review.review_date}} </td>
-                                        <td><button><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+                                        <td>
+                                            <form action="" method="POST">
+                                                {% csrf_token %}
+                                                <div>
+                                                    <input class="btn" type="submit" value="Remove Review">
+                                                    <input type="hidden" name="delete_id" value="{{review.review_ID}}">
+                                                </div>
+                                            </form>
+                                        </td>
 
                                     </tr>
 

@@ -140,6 +140,8 @@ def nationalParks(request, parkID):
                 newRating.park = current_park
                 newRating.camper = current_camper
                 newRating.save()
+                
+            review_list = Review.objects.all()
         
         park_list = Park.objects.all().order_by("park_id")
 

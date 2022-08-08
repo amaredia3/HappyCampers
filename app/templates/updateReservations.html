@@ -24,7 +24,7 @@
           <form method="POST" class="needs-validation">
             {% csrf_token %}
             <p>To delete reservation, hit Submit.</p>
-            <p>Tp update reservation, enter new dates and hit Submit.</p>
+            <p>To update reservation, enter new dates and hit Submit.</p>
             {% if error_message %}
             <div class="alert alert-danger" role="alert">{{ error_message }}</div>
             {% endif %}

@@ -38,7 +38,7 @@
 </style>
 
 <div class = "parks-page" style="height: 100%;"> 
-
+    <!-- Navigation Bar -->
     <div id = "login-navbar" class = "container-fluid" >
         <div class = "row" style="padding-top: .5%; padding-bottom: .5%; padding-left: 3%; padding-right: 3%; background-color: #f4d8ae;">
             <div id = "header icon" class = "col-1" style="content: center;">
@@ -90,7 +90,7 @@
         }
         </script>
 
-        <!-- Filter by Park Name or State -->
+      <!-- Filter by State -->
       <div class = "col-3" align = "center">
         <input id="stateSearch" type="text" onkeyup="filterState()" placeholder="Search by State...">
       </div>
@@ -132,6 +132,7 @@
         </tr>
       </thead>
       <tbody id="parksTable">
+        <!-- Iterate through each Park in database -->
         {% for park in park_list %}
         <tr>
           <td for="park-name"> {{ park.park_name }}</td>
@@ -141,6 +142,7 @@
               var parkhref = park.park_name; 
             </script>
 
+            <!-- Link to National Parks page to view more info about individual park -->
             <form action="" method = "POST">
               {% csrf_token %}
               <a href = 'nationalParks/{{park.park_id}}/' class="btn btn-primary" type="submit">View Park</a>

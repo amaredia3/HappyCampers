@@ -98,27 +98,6 @@ def nationalParks(request, parkID):
             if park.park_id == parkID:
                 current_park = park
 
-
-        #checks if review is just being updated
-        #updates value and date
-        for review in review_list:
-            if review.park_id == parkID and review.camper == current_camper:
-                newReview = False
-                review.review_rating = request.POST.get('rating-dropdown')
-                review.review_date = date.today()
-                review.save()
-
-        #checks if review is being created
-        #creates new review and sves to databse
-        if newReview == True:
-            newRating = Review()
-            newRating.review_rating = request.POST.get('rating-dropdown')
-            newRating.review_date = date.today()
-            newRating.review_id = random.randint(0, 999)
-            newRating.park = current_park
-            newRating.camper = current_camper
-            newRating.save()
-
         if "delete" in request.POST.values(): # delete review
             Review.objects.filter(review_id = 'delete_id').delete()
         else:

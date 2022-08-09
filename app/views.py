@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Camper, Park, Event, Review, Reservation
 from django.contrib.auth.hashers import make_password
@@ -255,21 +255,40 @@ def signup(request, parkID = ""):
     return render(request, 'signup.html', {'error_message': error_message})
 
 def changePassword(request):
+    '''
+    This function handles the change password form from changePassword.html. 
+    Receives from POST request: email, current password, and new password.
+    Then, tries to hash inputted current password and verifies account exists
+    Then it verifies the current password is correct then edits the password.
+    '''
     error_message = ''
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
         newPassword = request.POST['newPassword']
         try:
-            hashed_password = make_password(password)
-            user = Camper.objects.filter(
-                camper_email=email).only('camper_id')[0]
+            hashed_password = Camper.objects.filter(
+                camper_email=email).only('camper_password')[0].camper_password
         except:
-            user = None
-        if user is None:
+            hashed_password = None
+        if hashed_password is None:
             error_message = 'Account for this email does not exist'
         else:
-            user.camper_password = str(make_password(newPassword))
-            user.save()
-            return HttpResponseRedirect('home')
+            if check_password(password, hashed_password):
+                user = Camper.objects.filter(camper_email=email).only('camper_id')[0]
+                user.camper_password = str(make_password(newPassword))
+                user.save()
+                return HttpResponseRedirect('home')
+            else:
+                error_message = "Invalid Password"
     return render(request, 'changePassword.html', {'error_message': error_message})
+
+def logout(request):
+    '''
+    Delete session and redirect to login page.
+    '''
+    try:
+        del request.session['user']
+    except:
+        return redirect('login')
+    return redirect('login')

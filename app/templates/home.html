@@ -6,18 +6,23 @@
 {% endblock css %}
 
 {% block content %}
+<!--Below is the main header section with the mountain picture-->
 <header>
+  <!--Div tags used for content alignment-->
   <div id="intro" class="view">
     <div class="mask rgba-black-strong">
         <div class="container-fluid d-flex align-items-center justify-content-center h-100">
             <div class="row d-flex justify-content-center text-center">
                 <div class="col-md-10">
+                  <!--Text for main header section-->
                     <h2 class="display-1 text-white pt-5 mb-2"><strong>Happy Campers' HandBook</strong></h2>
                     <hr class="hr-light">
                     <h4 class="text-white my-4">To guide you though the United States' natural beauty.</h4>
+                    <!--Buttons on the main header section-->
                     <a type="button" class="btn btn-primary" href="/parks">View Parks</a>
                     <a type="button" class="btn btn-light" href="/">Log Out</a>
                     <a type="button" class="btn btn-warning" href="/changePassword">Change Password</a>
+                    <!--Button to delete account-->
                     <form method="POST" action="{% url 'home' %}">
                       {% csrf_token %}
                       <input type="submit" name="deleteAccount" class="btn btn-danger" value="Delete Account">

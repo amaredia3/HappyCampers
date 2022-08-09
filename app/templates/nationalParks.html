@@ -3,9 +3,11 @@
 
 {% block content %}
 
+
 <!--CDN for Font Awesome-->
 <script src="https://use.fontawesome.com/2bc0e1447f.js"></script>
 
+<!-- styling for page -->
 <style>
     .fa-color {
         color: green;
@@ -52,8 +54,10 @@
     
 </style>
 
+
 <div class = "national-parks-page" style="height: 100%;"> 
 
+    <!--Navbar for page-->
     <div id = "login-navbar" class = "container-fluid" >
         <div class = "row" style="padding-top: .5%; padding-bottom: .5%; padding-left: 3%; padding-right: 3%; background-color: #f4d8ae;">
             <div id = "header icon" class = "col-1" style="content: center;">
@@ -82,21 +86,24 @@
     
     
     
-    
+    <!--creates page with park information for current park-->
     {% for park in park_list %}
         {% if park.park_id == park_ID %}
             <div class = "container-fluid h-100%" style="background-color: #b6c48e; height: 100%;">
-            
+                
+                <!--Park Name-->
                 <div class = "row" style = "margin-bottom: 1.5; padding: 2%;">
                     <div class = "col-3" style = "padding: 0%;">
                         <h1>Park Name: {{ park.park_name }}</h1 >
                         <h3>Location: {{ park.park_coordinates }}</h3>
                     </div>
-            
+                    
+                    <!--Reservation Button-->
                     <div class = "col-3" align = "center">
                         <a class="btn" href="/reservations" role="button">Make a Reservation</a>
                     </div>
                     
+                    <!--Table with events-->
                     <div class = "col-3" align = "center">
 
                             <form action="" method="POST">
@@ -116,14 +123,16 @@
                             </div>
                             </form>
                     </div>
-            
+
+                    <!--Average Ratings-->
+                  
                     <div class = "col-3" align = "center">
                         Average Rating: {{ park.park_avgrating|floatformat }} / 5
 
                     </div>
                 </div>
                 
-            
+                <!--Park Description and photo for current park-->
                 <div class= "row">
                     <div class  = "col-5" style="padding: 2%;">
                         <h3>Park Description:</h3> <br> <br> {{ park.park_description }} 
@@ -164,6 +173,7 @@
                     </div>
                 </div>
             
+                <!--Event List for Park-->
                 <div class= "row" style = "height:fit-content;">
                     <div class  = "col" style="padding: 2%; background-color: #b6c48e;">
                         <h3>Upcoming Events:</h3> <br> <br>
@@ -202,7 +212,8 @@
                         </table>
                     </div>
                 </div>
-
+                
+                <!--Review section for Park from User-->
                 <div class= "row" style = "height:fit-content;">
                     <div class  = "col" style="padding: 2%; background-color: #b6c48e;">
                         <h3>Your Review:</h3> <br> <br>
